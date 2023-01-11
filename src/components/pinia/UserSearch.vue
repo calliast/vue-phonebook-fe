@@ -1,3 +1,25 @@
+<script setup>
+import { ref } from "vue";
+import { useContactStore } from "../../stores/contact";
+
+const { searchContact, searchReset } = useContactStore();
+
+const name = ref("");
+const phone = ref("");
+const mode = ref("and");
+
+function handleOnSubmit() {
+  searchContact({ name: name.value, phone: phone.value, mode: mode.value });
+}
+
+function handleOnReset() {
+  name.value = "";
+  phone.value = "";
+  mode.value = "and";
+  searchReset();
+}
+</script>
+
 <template>
   <div class="row">
     <h2>Search contact</h2>
@@ -15,7 +37,7 @@
               class="form-control"
               id="name-search"
               name="name"
-              v-model="search.name"
+              v-model="name"
             />
           </div>
         </div>
@@ -29,7 +51,7 @@
               class="form-control"
               id="phone-search"
               name="phone"
-              v-model="search.phone"
+              v-model="phone"
             />
           </div>
         </div>
@@ -68,7 +90,7 @@
                   name="mode"
                   id="strict"
                   value="and"
-                  v-model="search.mode"
+                  v-model="mode"
                 />
                 <label class="form-check-label mt-1" for="strict">
                   Specific
@@ -83,7 +105,7 @@
                   name="mode"
                   id="loose"
                   value="or"
-                  v-model="search.mode"
+                  v-model="mode"
                 />
                 <label class="form-check-label mt-1" for="loose"> Any </label>
               </div>
@@ -94,33 +116,3 @@
     </div>
   </form>
 </template>
-
-<script>
-export default {
-  emits: ["search", "reset"],
-  data() {
-    return {
-      search: {
-        name: "",
-        phone: "",
-        mode: "and",
-      },
-    };
-  },
-  methods: {
-    handleOnSubmit() {
-      this.$emit("search", {
-        name: this.search.name,
-        phone: this.search.phone,
-        mode: this.search.mode,
-      });
-    },
-    handleOnReset() {
-      this.search.name = "";
-      this.search.phone = "";
-      this.search.mode = "and";
-      this.$emit("reset");
-    },
-  },
-};
-</script>

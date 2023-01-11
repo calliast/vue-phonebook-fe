@@ -1,5 +1,5 @@
 <script setup>
-import Phonebook from '../components/User.vue'
+import Phonebook from '../components/pinia/UserBox.vue'
 
 </script>
 
